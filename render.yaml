@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: army-test
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DB_HOST
+        fromDatabase:
+          name: army-db
+          property: connectionString
+    plan: free
+    numInstances: 1
+    healthCheckPath: /api/health
+
+databases:
+  - name: army-db
+    databaseName: army_mcq
+    user: admin
+    plan: free
+    ipAllowList:
+      - 0.0.0.0/0
