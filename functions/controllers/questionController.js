@@ -39,6 +39,22 @@ export const getRandomQuestions = async (req, res) => {
       });
     }
 
+    const attributes = [
+      'id',
+      'category',
+      'questionText',
+      'questionTextFr',
+      'optionA',
+      'optionB',
+      'optionC',
+      'optionD',
+      'correctAnswer',
+      'imageUrl',
+      'difficulty',
+      'explanation',
+      'explanationFr',
+    ];
+
     // Special handling for IDENT6 (mixed revision test)
     let questions;
     if (category === 'IDENT6') {
@@ -50,6 +66,7 @@ export const getRandomQuestions = async (req, res) => {
       for (const cat of categoriesToSample) {
         try {
           const categoryQuestions = await Question.findAll({
+            attributes,
             where: { category: cat },
             order: sequelize.random(),
             limit: 2, // 2 questions from each category
@@ -69,6 +86,7 @@ export const getRandomQuestions = async (req, res) => {
       // Regular category handling
       console.log(`[DEBUG] Fetching questions for category: ${category}`);
       questions = await Question.findAll({
+        attributes,
         where: { category },
         order: sequelize.random(),
         limit: Math.min(parseInt(limit), 100), // Max 100 questions
@@ -123,7 +141,7 @@ export const getRandomQuestions = async (req, res) => {
         optionB: question.optionB || 'Option B',
         optionC: question.optionC || 'Option C',
         optionD: question.optionD || 'Option D',
-        imageUrl: question.imageUrl ? `http://localhost:5000/uploads/${question.imageUrl}` : null,
+        imageUrl: question.imageUrl ? `https://army-test.onrender.com/uploads/${question.imageUrl}` : null,
         category: question.category || 'IDENT6',
         difficulty: question.difficulty || 'medium',
         correctAnswer: correctAnswer,

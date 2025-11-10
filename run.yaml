@@ -1,0 +1,14 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: api
+  labels:
+    cloud.googleapis.com/location: us-central1
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/cloudrun/hello
+        env:
+        - name: TARGET_URL
+          value: https://army-test.onrender.com
