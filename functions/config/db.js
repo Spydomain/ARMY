@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+let sequelize;
+
 // Render provides the connection string in the DB_HOST environment variable
 // based on the render.yaml configuration.
 const connectionString = process.env.DB_HOST;
@@ -22,7 +24,7 @@ if (!connectionString) {
     throw new Error("Database configuration is incomplete. Connection string or individual DB variables must be set.");
   }
 
-  const sequelize = new Sequelize(
+  sequelize = new Sequelize(
     dbConfig.name,
     dbConfig.user,
     dbConfig.password,
@@ -32,12 +34,10 @@ if (!connectionString) {
       logging: false,
     }
   );
-  
-  module.exports = { sequelize };
 
 } else {
   console.log("Connecting to the database using the provided connection string.");
-  const sequelize = new Sequelize(connectionString, {
+  sequelize = new Sequelize(connectionString, {
     dialect: 'mysql',
     logging: false, // Disable logging in production for cleaner logs
     dialectOptions: {
@@ -49,6 +49,6 @@ if (!connectionString) {
       // }
     }
   });
-
-  module.exports = { sequelize };
 }
+
+export { sequelize };
