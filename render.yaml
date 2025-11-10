@@ -1,26 +1,20 @@
 services:
   - type: web
-    name: army-test
+    name: ARMY-backend
     env: node
+    region: Frankfurt
+    plan: free
+    branch: main
+    rootDir: functions
     buildCommand: npm install
-    startCommand: npm start
+    startCommand: node index.js
     envVars:
-      - key: NODE_ENV
-        value: production
-      - key: PORT
-        value: 10000
       - key: DB_HOST
         fromDatabase:
           name: army-db
           property: connectionString
-    plan: free
-    numInstances: 1
-    healthCheckPath: /api/health
 
 databases:
   - name: army-db
-    databaseName: army_mcq
-    user: admin
+    engine: mysql  # Specify MySQL engine
     plan: free
-    ipAllowList:
-      - 0.0.0.0/0

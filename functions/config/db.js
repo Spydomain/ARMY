@@ -37,8 +37,8 @@ if (!connectionString) {
 
 } else {
   console.log("Connecting to the database using the provided connection string.");
+  // Let Sequelize infer the dialect from the connection string
   sequelize = new Sequelize(connectionString, {
-    dialect: 'mysql',
     logging: false, // Disable logging in production for cleaner logs
     dialectOptions: {
       // Render's MySQL databases might require SSL. 
